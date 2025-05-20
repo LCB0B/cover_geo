@@ -137,9 +137,8 @@ def save_plots(coord, xmin, ymin, zoom_factor, ratio=285/213, std=1,scale=1e3, o
         coords_csv_specific_dir = os.path.join(coords_csv_basedir, f"x{int(xmin)}_y{int(ymin)}_z{zoom_factor:.2f}")
         os.makedirs(coords_csv_specific_dir, exist_ok=True)
 
-    def _save_coordinates_to_csv_if_enabled(coordinates_array, plot_type_suffix):
+    def _save_coordinates_to_csv(coordinates_array, plot_type_suffix):
         if save_coords_csv and coords_csv_specific_dir is not None:
-            # Ensure the coordinates_array is 2D, even if it's a single point
             if coordinates_array.ndim == 1:
                  coordinates_array = coordinates_array.reshape(1, -1)
             
@@ -161,7 +160,7 @@ def save_plots(coord, xmin, ymin, zoom_factor, ratio=285/213, std=1,scale=1e3, o
                                 flip_x=False,
                                 flip_y=False):
                                 
-        
+        _save_coordinates_to_csv(plot_coordinates, filename_suffix)
         coords_to_plot = np.copy(plot_coordinates)
 
         if flip_x:
@@ -454,5 +453,5 @@ def create_animation_sequence(coord, xmin, ymin, zoom_factor,
 
 
 
-#save_plots(coord, xmin, ymin, zoom_factor,std=std,scale=scale)
-create_animation_sequence(coord, xmin, ymin, zoom_factor, std=std, scale=scale, frames_per_transition=30, fps=30)
+save_plots(coord, xmin, ymin, zoom_factor,std=std,scale=scale,save_coords_csv=True)
+# create_animation_sequence(coord, xmin, ymin, zoom_factor, std=std, scale=scale, frames_per_transition=30, fps=30)
